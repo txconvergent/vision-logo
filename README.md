@@ -2,7 +2,7 @@
 
 Notes: 
 
-Update as of November 25th: It turns out the feature-matching works great on complex logos with text and stuff, but works poorly on simple logos like the Nike swoosh. Currently working on a hybrid solution that combines an advanced version of template matching with feature-matching. It doesn't work yet, hence I'm not pushing it to the github right now.
+Update as of November 25th: It turns out the feature-matching works great on complex logos with text and stuff, but works poorly on simple logos like the Nike swoosh. Currently working on a hybrid solution that combines an advanced version of template matching with feature-matching. It doesn't work yet, hence its not on the github right now.
 
 
 
