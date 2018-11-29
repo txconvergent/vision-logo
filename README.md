@@ -1,9 +1,5 @@
 # vision-logo
 
-download Logo_Backend
-
-
-
 
 Notes: 
 
