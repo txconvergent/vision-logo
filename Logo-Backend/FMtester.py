@@ -1,18 +1,33 @@
 import cv2
 import math
 import glob
+import webbrowser
 import argparse
 import sys
 import numpy as np
-#from matplotlib import pyplot as plt
+
 DEFAULT_WIDTH = 500
 MATCH_TEMP_WIDTH = 100
 MINIMUM_MATCHES = 42
 
 logos = []
-
+descriptions = []
 for filepath in glob.glob('logos\*'):
+    print(filepath)
     logos.append(cv2.imread(filepath))
+
+descriptions.append("https://www.adidas.com/us")
+descriptions.append("https://www.apple.com/")
+descriptions.append("http://www.txconvergent.org/")
+descriptions.append("http://www.txconvergent.org/")
+descriptions.append("https://www.microsoft.com/en-us/")
+descriptions.append("https://www.microsoft.com/en-us/")
+descriptions.append("https://www.nike.com")
+descriptions.append("https://www.samsung.com/us/")
+descriptions.append("https://www.samsung.com/us/")
+descriptions.append("https://www.spotify.com/us/")
+descriptions.append("https://www.underarmour.com/en-us/")
+
 
 #np_frame = np.asarray(logos)
 
@@ -68,9 +83,11 @@ while not done:
     bestMatches = []
     imgToShow = stockimg
     kpToShow = orb.detect(stockimg, None)
+    logoIndex = -1
     if desc_grayframe is not None:
         min = MINIMUM_MATCHES
-        for img in logos:
+        for i in range(len(logos)):
+            img = logos[i]
             height, width = img.shape[:2]
             tempimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -95,6 +112,7 @@ while not done:
                     bestMatches = tempMatches
                     imgToShow = colortemplate
                     kpToShow = kp_image
+                    logoIndex = i
 
             #matchesList.append(tempMatches)
 
@@ -105,10 +123,51 @@ while not done:
     #res = cv2.resize(imgToShow, None, fx=0.5, fy=0.5, interpolation = cv2.INTER_LINEAR)
     #kp_final = orb.detect(res, None)
     matching_result = cv2.drawMatches(imgToShow, kpToShow, frame, kp_grayframe, bestMatches[:matchesLength], None, flags=2)
+    font                   = cv2.FONT_HERSHEY_SIMPLEX
+    bottomLeftCornerOfText = (650,450)
+    fontScale              = 1
+    fontColor              = (255,255,255)
+    lineType               = 2
+
+    cv2.putText(matching_result,'press enter to search',
+    bottomLeftCornerOfText,
+    font,
+    fontScale,
+    fontColor,
+    lineType)
     cv2.imshow("LogoMeNOW", matching_result)
     #cap.release()
+
     key = cv2.waitKey(1)
-    if key == 27:
+    if key==13:
+        print("key pressed")
+        # Create a black image
+        canvas = np.zeros((200,512,3), np.uint8)
+
+        # Write some Text
+
+        font                   = cv2.FONT_HERSHEY_SIMPLEX
+        bottomLeftCornerOfText = (10,30)
+        fontScale              = 1
+        fontColor              = (255,255,255)
+        lineType               = 2
+
+        #Display the image
+
+        if(logoIndex == -1):
+            cv2.putText(canvas,'Error: no matches found',
+            bottomLeftCornerOfText,
+            font,
+            fontScale,
+            fontColor,
+            lineType)
+            cv2.imshow("img",canvas)
+
+        else:
+            webbrowser.open(descriptions[logoIndex], True)
+
+
+    elif key == 27:
         done = True
 
 cap.release()
